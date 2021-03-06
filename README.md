@@ -6,5 +6,5 @@ Clone the project and reference it to any .NET Framework project to make call to
 1.	API references
 https://antplus.aliceblueonline.com/#introduction
 
-# Authentication issues
+# Authentication issue
 https://stackoverflow.com/questions/56546894/oauth2-authentication-c-sharp-code-is-not-working
