@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/AliceBlueOnline/.vs/AliceBlueOnline/v16/.suo
+/AliceBlueOnline/AliceBlueOnlineLibrary/bin/Debug
+/AliceBlueOnline/AliceBlueOnlineLibrary/obj/Debug
+/AliceBlueOnline/MainAliceBlue/bin/Debug
+/AliceBlueOnline/MainAliceBlue/obj/Debug
+/AliceBlueOnline/packages
+/.vs
