@@ -2,9 +2,12 @@
 Implementation of aliceblueonline API on .NET Framework with C# for Interactive and Feeds API.
 
 # Getting Started
-Clone the project and reference it to any .NET Framework project to make call to all routes.
+Reference AliceBlueOnlineLibrary project in any .NET Framework project to make call to all routes.
 1.	API references
 https://antplus.aliceblueonline.com/#introduction
 
-# Authentication issue
-https://stackoverflow.com/questions/56546894/oauth2-authentication-c-sharp-code-is-not-working
+# Examples
+The Main project in AliceBlueOnline solution is a Cosole application that : 
+1. Get token from cache if already exist
+2. Instancitae a new AliceBlueApi Object
+3. Call all routes to get, update, delete Orders, profiles ......
