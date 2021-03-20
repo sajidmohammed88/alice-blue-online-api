@@ -40,7 +40,7 @@ namespace AliceBlueOnlineLibrary.TokenGenerator
                     $"{Constants.Token.AccessTokenRoute}?client_id={tokenRequest.AppId}&client_secret={tokenRequest.ApiSecret}&grant_type=authorization_code&code={code}" +
                         $"&redirect_uri={tokenRequest.RedirectUrl}&authorization_response={url}",
                     new StringContent(
-                        $"code={code}&redirect_uri={tokenRequest.RedirectUrl}&grant_type=authorization_code&client_secret={tokenRequest.ApiSecret}&client_id={tokenRequest.UserName}",
+                        $"code={code}&redirect_uri={tokenRequest.RedirectUrl}&grant_type=authorization_code&client_secret={tokenRequest.ApiSecret}&cliend_id={tokenRequest.UserName}",
                         Encoding.UTF8,
                         "application/x-www-form-urlencoded"
                     ));

@@ -188,7 +188,7 @@ namespace AliceBlueOnlineLibrary
 
             if (!responseMessage.IsSuccessStatusCode)
             {
-                throw new HttpRequestException("Not able to Retrieve netwise or daywise positions");
+                throw new HttpRequestException("Not able to Retrieve net wise or day wise positions");
             }
 
             return JsonConvert.DeserializeObject<PositionResponse>(await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false), _settings);

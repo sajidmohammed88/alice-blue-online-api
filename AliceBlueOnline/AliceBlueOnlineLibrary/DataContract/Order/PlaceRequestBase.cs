@@ -19,7 +19,7 @@ namespace AliceBlueOnlineLibrary.DataContract.Order
         [JsonProperty("disclosed_quantity")]
         public int DisclosedQuantity { get; set; }
 
-        public decimal Price { get; set; }
+        public float Price { get; set; }
 
         [JsonProperty("transaction_type")]
         public OrderSide TransactionType { get; set; }

@@ -51,9 +51,9 @@ namespace MainAliceBlue
                 InstrumentToken = 11460,
                 Quantity = 1,
                 DisclosedQuantity = 0,
-                Price = 0,
+                Price = 10,
                 TransactionType = OrderSide.BUY,
-                TriggerPrice = 0.0M,
+                TriggerPrice = 0.0F,
                 Validity = "DAY",
                 Product = ProductType.CNC,
                 Source = "web",
@@ -80,7 +80,7 @@ namespace MainAliceBlue
                 InstrumentToken = 47308,
                 Quantity = 40,
                 DisclosedQuantity = 0,
-                Price = 27956.50M,
+                Price = 27956.50F,
                 TransactionType = OrderSide.BUY,
                 Validity = "DAY",
                 Source = "web",
@@ -110,7 +110,7 @@ namespace MainAliceBlue
                         DisclosedQuantity = 0,
                         Price = 0,
                         TransactionType = OrderSide.BUY,
-                        TriggerPrice = 0.0M,
+                        TriggerPrice = 0.0F,
                         Validity = "DAY",
                         Product = ProductType.CNC
                     },
@@ -123,7 +123,7 @@ namespace MainAliceBlue
                         DisclosedQuantity = 0,
                         Price = 0,
                         TransactionType = OrderSide.BUY,
-                        TriggerPrice = 0.0M,
+                        TriggerPrice = 0.0F,
                         Validity = "DAY",
                         Product = ProductType.CNC
                     }
@@ -138,15 +138,15 @@ namespace MainAliceBlue
             //modify order
             var modifyOrderRequest = new ModifyOrderRequest
             {
-                OmsOrderId = "210320000000046",
+                OmsOrderId = "210320000000049",
                 Exchange = Exchange.NSE,
                 OrderType = OrderType.LIMIT,
                 InstrumentToken = 11460,
-                Quantity = 1,
+                Quantity = 2,
                 DisclosedQuantity = 0,
-                Price = 13.6M,
+                Price = 13.6F,
                 TransactionType = OrderSide.BUY,
-                TriggerPrice = 0.0M,
+                TriggerPrice = 0.0F,
                 Validity = "DAY",
                 Product = ProductType.CNC,
             };
@@ -179,7 +179,7 @@ namespace MainAliceBlue
             }
 
             //script info
-            var scriptInfoResponse = await aliceBlueApi.GetScriptInfo(Exchange.MCX, 47308).ConfigureAwait(false);
+            var scriptInfoResponse = await aliceBlueApi.GetScriptInfo(Exchange.NSE, 11460).ConfigureAwait(false);
             if (scriptInfoResponse == null)
             {
                 throw new ArgumentNullException(nameof(scriptInfoResponse));
