@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AliceBlueOnlineLibrary.TokenGenerator.Response
+namespace AliceBlueOnlineLibrary.DataContract.Token.Response
 {
     public class TokenResponse
     {

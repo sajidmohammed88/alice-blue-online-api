@@ -1,4 +1,4 @@
-﻿namespace AliceBlueOnlineLibrary.TokenGenerator.Request
+﻿namespace AliceBlueOnlineLibrary.DataContract.Token.Request
 {
     public class TokenRequest
     {

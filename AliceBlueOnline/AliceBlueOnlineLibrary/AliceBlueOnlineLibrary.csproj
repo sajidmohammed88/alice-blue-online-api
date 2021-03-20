@@ -49,14 +49,58 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AliceBlueApi.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Abstractions\IAliceBlueApi.cs" />
+    <Compile Include="DataContract\BaseMessage.cs" />
+    <Compile Include="DataContract\Enum\Exchange.cs" />
+    <Compile Include="DataContract\Holdings\Holding.cs" />
+    <Compile Include="DataContract\Holdings\HoldingData.cs" />
+    <Compile Include="DataContract\Holdings\HoldingResponse.cs" />
+    <Compile Include="DataContract\Order\Enum\OrderSide.cs" />
+    <Compile Include="DataContract\Order\Enum\OrderType.cs" />
+    <Compile Include="DataContract\Order\Enum\ProductType.cs" />
+    <Compile Include="DataContract\Order\Order.cs" />
+    <Compile Include="DataContract\Order\Request\ModifyOrderRequest.cs" />
+    <Compile Include="DataContract\Order\Request\PlaceBasketOrderRequest.cs" />
+    <Compile Include="DataContract\Order\Request\PlaceBracketOrderRequest.cs" />
+    <Compile Include="DataContract\Order\PlaceRequestBase.cs" />
+    <Compile Include="DataContract\Order\Response\Data\CancelOrderResponseData.cs" />
+    <Compile Include="DataContract\Order\Response\CancelOrderResponse.cs" />
+    <Compile Include="DataContract\CashPositions\CashPositionResponse.cs" />
+    <Compile Include="DataContract\CashPositions\Data\CashPosition.cs" />
+    <Compile Include="DataContract\CashPositions\Data\AvailableMargins.cs" />
+    <Compile Include="DataContract\CashPositions\Data\UtilizedMargins.cs" />
+    <Compile Include="DataContract\Order\Response\Data\OrderBook\OrderBook.cs" />
+    <Compile Include="DataContract\Order\Response\Data\OrderBook\OrderBookResponseData.cs" />
+    <Compile Include="DataContract\CashPositions\Data\CashPositionData.cs" />
+    <Compile Include="DataContract\Order\Response\Data\OrderHistoryResponseData.cs" />
+    <Compile Include="DataContract\Positions\Position.cs" />
+    <Compile Include="DataContract\Positions\PositionData.cs" />
+    <Compile Include="DataContract\Positions\PositionResponse.cs" />
+    <Compile Include="DataContract\ScriptInfo\ScriptInfoResponseData.cs" />
+    <Compile Include="DataContract\Trade\Trade.cs" />
+    <Compile Include="DataContract\Trade\TradeResponseData.cs" />
+    <Compile Include="DataContract\Order\Response\ModifyOrderResponse.cs" />
+    <Compile Include="DataContract\Order\Response\Data\ModifyOrderResponseData.cs" />
+    <Compile Include="DataContract\Order\Response\Data\PlaceResponseData.cs" />
+    <Compile Include="DataContract\Order\Request\PlaceOrderOrAmoRequest.cs" />
+    <Compile Include="DataContract\Order\Response\OrderBookResponse.cs" />
+    <Compile Include="DataContract\Order\Response\OrderHistoryResponse.cs" />
+    <Compile Include="DataContract\Order\Response\PlaceOrderResponse.cs" />
+    <Compile Include="DataContract\ScriptInfo\ScriptInfoResponse.cs" />
+    <Compile Include="DataContract\Trade\TradeResponse.cs" />
+    <Compile Include="DataContract\Profile\Bank.cs" />
+    <Compile Include="DataContract\Profile\ProfileData.cs" />
+    <Compile Include="DataContract\Profile\ProfileResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenGenerator\TokenGenerator.cs" />
     <Compile Include="TokenGenerator\Cache\TokenMemoryCache.cs" />
-    <Compile Include="TokenGenerator\Request\TokenRequest.cs" />
-    <Compile Include="TokenGenerator\Response\TokenResponse.cs" />
+    <Compile Include="DataContract\Token\Request\TokenRequest.cs" />
+    <Compile Include="DataContract\Token\Response\TokenResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
