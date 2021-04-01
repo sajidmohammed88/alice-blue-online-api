@@ -2,11 +2,11 @@
 {
     public enum Exchange
     {
-        NSE,
+        NSE = 1,
         NFO,
         CDS,
         MCX,
-        BSE,
+        BSE = 6,
         BFO
     }
 }

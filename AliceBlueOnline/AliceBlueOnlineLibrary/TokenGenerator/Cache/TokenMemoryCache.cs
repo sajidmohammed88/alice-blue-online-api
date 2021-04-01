@@ -1,11 +1,12 @@
-﻿using AliceBlueOnlineLibrary.DataContract.Token.Response;
+﻿using AliceBlueOnlineLibrary.Abstractions;
 using System;
+using System.Reflection;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 
 namespace AliceBlueOnlineLibrary.TokenGenerator.Cache
 {
-    public class TokenMemoryCache
+    public class TokenMemoryCache<T> : ITokenMemoryCache<T> where T : class
     {
         private readonly MemoryCache _cache;
 
@@ -14,24 +15,30 @@ namespace AliceBlueOnlineLibrary.TokenGenerator.Cache
             _cache = new MemoryCache("TokenCaching");
         }
 
-        public async Task<string> GetTokenFromCache(string cacheKey, Func<Task<TokenResponse>> func)
+        /// <inheritdoc />
+        public async Task<T> GetTokenFromCache(string cacheKey, Func<Task<T>> func)
         {
-            if (_cache.Get(cacheKey) is TokenResponse tokenResponse)
+            if (_cache.Get(cacheKey) is T tokenResponse)
             {
-                return tokenResponse.AccessToken;
+                return tokenResponse;
             }
 
             tokenResponse = await func().ConfigureAwait(false);
 
-            var cacheItem = new CacheItem(cacheKey, tokenResponse);
-            var cacheItemPolicy = new CacheItemPolicy
+            if (!(typeof(T).GetProperty("ExpirationDelay", BindingFlags.Instance | BindingFlags.Public)
+                ?.GetValue(tokenResponse) is int expirationDelay))
             {
-                AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(tokenResponse.ExpirationDelay)
+                return tokenResponse;
+            }
+
+            CacheItemPolicy cacheItemPolicy = new CacheItemPolicy
+            {
+                AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(expirationDelay)
             };
 
-            _cache.Add(cacheItem, cacheItemPolicy);
+            _cache.Add(new CacheItem(cacheKey, tokenResponse), cacheItemPolicy);
 
-            return tokenResponse.AccessToken;
+            return tokenResponse;
         }
     }
 }

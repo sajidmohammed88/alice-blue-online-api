@@ -30,7 +30,7 @@ namespace AliceBlueOnlineLibrary.TokenGenerator
             {
                 var csrTokenAndLoginChallenge = await GetCsrTokenAngLoginChallenge(httpClient, tokenRequest).ConfigureAwait(false);
                 var loginContent = await GetLoginContent(httpClient, tokenRequest, csrTokenAndLoginChallenge).ConfigureAwait(false);
-                var (code, url) = await GetAuthorizationCode(httpClient, tokenRequest, (csrTokenAndLoginChallenge.Item1, csrTokenAndLoginChallenge.Item2), loginContent).ConfigureAwait(false);
+                (string code, string url) = await GetAuthorizationCode(httpClient, tokenRequest, (csrTokenAndLoginChallenge.Item1, csrTokenAndLoginChallenge.Item2), loginContent).ConfigureAwait(false);
 
                 //get access token
                 httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization",
@@ -66,7 +66,7 @@ namespace AliceBlueOnlineLibrary.TokenGenerator
                     .GetAsync($"{Constants.Token.AuthorizationRoute}?response_type=code&state=test_state&client_id={tokenRequest.AppId}&redirect_uri={tokenRequest.RedirectUrl}")
                     .ConfigureAwait(false);
 
-            var authContent = await authResult.Content.ReadAsStringAsync().ConfigureAwait(false);
+            string authContent = await authResult.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (authContent.Contains("OAuth 2.0 Error"))
             {
@@ -76,8 +76,8 @@ namespace AliceBlueOnlineLibrary.TokenGenerator
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(authContent);
 
-            var csrfToken = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='_csrf_token']")?.Attributes["value"]?.Value;
-            var loginChallenge = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='login_challenge']")?.Attributes["value"]?.Value;
+            string csrfToken = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='_csrf_token']")?.Attributes["value"]?.Value;
+            string loginChallenge = htmlDocument.DocumentNode.SelectSingleNode("//input[@name='login_challenge']")?.Attributes["value"]?.Value;
 
             return (csrfToken, loginChallenge, authResult.RequestMessage.RequestUri);
         }
@@ -97,7 +97,7 @@ namespace AliceBlueOnlineLibrary.TokenGenerator
                     "application/x-www-form-urlencoded")
                     ).ConfigureAwait(false);
 
-            var loginContent = await loginResult.Content.ReadAsStringAsync().ConfigureAwait(false);
+            string loginContent = await loginResult.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (loginContent.Contains("Please Enter Valid Password"))
             {
@@ -122,7 +122,7 @@ namespace AliceBlueOnlineLibrary.TokenGenerator
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="tokenRequest">The token request.</param>
-        /// <param name="csrTokenAndLoginChallenge">The Typle of csr token and login challenge</param>
+        /// <param name="csrTokenAndLoginChallenge">The Tuple of csr token and login challenge</param>
         /// <param name="loginContent">The login page content.</param>
         /// <returns>The authorization code.</returns>
         private static async Task<(string, string)> GetAuthorizationCode(HttpClient httpClient, TokenRequest tokenRequest, (string, string) csrTokenAndLoginChallenge, (string, Uri) loginContent)
@@ -131,10 +131,10 @@ namespace AliceBlueOnlineLibrary.TokenGenerator
             var htmlDocument = new HtmlDocument();
             htmlDocument.LoadHtml(loginContent.Item1);
 
-            var index = 1;
+            int index = 1;
             foreach (var item in htmlDocument.DocumentNode.SelectNodes("//input[@name='question_id1']"))
             {
-                var value = item.Attributes["value"]?.Value;
+                string value = item.Attributes["value"]?.Value;
                 if (value == null)
                 {
                     continue;
@@ -150,15 +150,15 @@ namespace AliceBlueOnlineLibrary.TokenGenerator
                         Encoding.UTF8,
                         "application/x-www-form-urlencoded")
                         ).ConfigureAwait(false);
-            var result = await twoFaResult.Content.ReadAsStringAsync().ConfigureAwait(false);
+            string result = await twoFaResult.Content.ReadAsStringAsync().ConfigureAwait(false);
             if (result.Contains("Internal server error"))
             {
                 throw new HttpRequestException(@"Getting 'Internal server error' while authorizing the app for the first time.");
             }
 
-            var query = twoFaResult.RequestMessage.RequestUri.Query;
-            var indexOfEquals = query.IndexOf("=", StringComparison.Ordinal);
-            var code = query.Substring(indexOfEquals + 1, query.IndexOf("&", StringComparison.Ordinal) - indexOfEquals - 1);
+            string query = twoFaResult.RequestMessage.RequestUri.Query;
+            int indexOfEquals = query.IndexOf("=", StringComparison.Ordinal);
+            string code = query.Substring(indexOfEquals + 1, query.IndexOf("&", StringComparison.Ordinal) - indexOfEquals - 1);
 
             return (code, twoFaResult.RequestMessage.RequestUri.AbsoluteUri);
         }

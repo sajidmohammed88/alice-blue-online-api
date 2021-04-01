@@ -13,6 +13,7 @@
         public static class AliceBlue
         {
             internal const string ProfileRoute = "/api/v2/profile";
+            internal const string MasterContract = "/api/v2/contracts.json?exchanges={0}";
             public const string OrderRoute = "/api/v2/order";
             public const string AmoRoute = "/api/v2/amo";
             public const string BracketOrderRoute = "/api/v2/bracketorder";

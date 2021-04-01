@@ -1,5 +1,6 @@
 ﻿using AliceBlueOnlineLibrary.Abstractions;
 using AliceBlueOnlineLibrary.DataContract.CashPositions;
+using AliceBlueOnlineLibrary.DataContract.Contracts;
 using AliceBlueOnlineLibrary.DataContract.Enum;
 using AliceBlueOnlineLibrary.DataContract.Holdings;
 using AliceBlueOnlineLibrary.DataContract.Order;
@@ -11,8 +12,11 @@ using AliceBlueOnlineLibrary.DataContract.ScriptInfo;
 using AliceBlueOnlineLibrary.DataContract.Trade;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -26,10 +30,6 @@ namespace AliceBlueOnlineLibrary
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerSettings _settings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AliceBlueApi"/> class.
-        /// </summary>
-        /// <param name="accessToken">The access token.</param>
         public AliceBlueApi(string accessToken)
         {
             _httpClient = new HttpClient { BaseAddress = new Uri(Constants.BaseUrl) };
@@ -56,6 +56,26 @@ namespace AliceBlueOnlineLibrary
             }
 
             return JsonConvert.DeserializeObject<ProfileResponse>(await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false), _settings);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<Instrument>> GetInstruments(string exchange)
+        {
+            var responseMessage = await _httpClient.GetAsync(string.Format(Constants.AliceBlue.MasterContract, exchange)).ConfigureAwait(false);
+
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException("Not able to Retrieve master contract");
+            }
+
+            JEnumerable<JToken> contractElements = JObject.Parse(await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false)).Children();
+            if (contractElements.Any())
+            {
+                return JsonConvert.DeserializeObject<IList<Instrument>>(
+                    $"[{string.Join(",", contractElements.SelectMany(_ => _.Values().Select(v => v.ToString())))}]");
+            }
+
+            return null;
         }
 
         /// <inheritdoc />

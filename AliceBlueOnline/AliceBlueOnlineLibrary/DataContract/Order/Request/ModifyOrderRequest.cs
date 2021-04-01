@@ -6,5 +6,8 @@ namespace AliceBlueOnlineLibrary.DataContract.Order.Request
     {
         [JsonProperty("oms_order_id")]
         public string OmsOrderId { get; set; }
+
+        [JsonProperty("nest_request_id")]
+        public string NestRequestId { get; set; }
     }
 }
