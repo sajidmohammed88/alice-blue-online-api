@@ -17,26 +17,29 @@ namespace AliceBlueOnlineLibrary
     {
         private readonly IAliceBlueApi _aliceBlueApi;
         private readonly string _socketEndpoint;
+
         private readonly AutoResetEvent _messageReceiveEvent = new AutoResetEvent(false);
         private WebSocket _webSocket;
+
         private readonly Dictionary<LiveFeedType, string> _subscriptionModes;
-        private readonly Dictionary<string, IList<Instrument>> _masterContractsDict = new Dictionary<string, IList<Instrument>>();
+        private readonly Dictionary<string, IList<Instrument>> _masterContractsDict;
         private List<string> _exchangeToDownload;
         private List<MarketStatus> _marketStatusList;
         private List<ExchangeMessage> _exchangeMessages;
+        private MarketData _marketData;
+        private CompactData _compactData;
+        private SnapQuote _snapQuote;
+        private FullSnapQuote _fullSnapQuote;
+        private Dpr _dpr;
+        private OpenInterest _openInterest;
 
         public AliceBlueFeeds(IAliceBlueApi aliceBlueApi, string accessToken, List<string> exchangeToDownload)
         {
             _aliceBlueApi = aliceBlueApi;
             _socketEndpoint = $"wss://ant.aliceblueonline.com/hydrasocket/v2/websocket?access_token={accessToken}";
             _exchangeToDownload = exchangeToDownload;
-            _subscriptionModes = new Dictionary<LiveFeedType, string>
-            {
-                {LiveFeedType.Compact, "compact_marketdata"},
-                {LiveFeedType.MarketData, "marketdata"},
-                {LiveFeedType.SnapQuote, "snapquote"},
-                {LiveFeedType.FullSnapQuote, "full_snapquote"}
-            };
+            _subscriptionModes = Helper.Helper.GetSubscriptionModes();
+            _masterContractsDict = new Dictionary<string, IList<Instrument>>();
         }
 
         /// <inheritdoc />
@@ -106,13 +109,13 @@ namespace AliceBlueOnlineLibrary
         /// <inheritdoc />
         public void SubscribeMarketStatusMessages()
         {
-            SendData(JsonConvert.SerializeObject(new { a = "subscribe", v = new[] { 1, 2, 3, 4, 6 }, m = "market_status" }));
+            SendData(JsonConvert.SerializeObject(new { a = "subscribe", v = new[] { 1, 2, 3, 4, 6 }, m = "market_status" }), "subscribe");
         }
 
         /// <inheritdoc />
         public void SubscribeExchangeMessages()
         {
-            SendData(JsonConvert.SerializeObject(new { a = "subscribe", v = new[] { 1, 2, 3, 4, 6 }, m = "exchange_messages" }));
+            SendData(JsonConvert.SerializeObject(new { a = "subscribe", v = new[] { 1, 2, 3, 4, 6 }, m = "exchange_messages" }), "subscribe");
         }
 
         /// <inheritdoc />
@@ -134,6 +137,42 @@ namespace AliceBlueOnlineLibrary
         }
 
         /// <inheritdoc />
+        public MarketData GetMarketData()
+        {
+            return _marketData;
+        }
+
+        /// <inheritdoc />
+        public CompactData GetCompactData()
+        {
+            return _compactData;
+        }
+
+        /// <inheritdoc />
+        public SnapQuote GetSnapQuote()
+        {
+            return _snapQuote;
+        }
+
+        /// <inheritdoc />
+        public FullSnapQuote GetFullSnapQuote()
+        {
+            return _fullSnapQuote;
+        }
+
+        /// <inheritdoc />
+        public Dpr GetDpr()
+        {
+            return _dpr;
+        }
+
+        /// <inheritdoc />
+        public OpenInterest GetOpenInterest()
+        {
+            return _openInterest;
+        }
+
+        /// <inheritdoc />
         public void Close()
         {
             _webSocket.Close();
@@ -149,10 +188,10 @@ namespace AliceBlueOnlineLibrary
             int[][] arrayOfExchangeAndToken = instruments
                 .Select(instrument => new[] { (int)instrument.Exchange, instrument.Token })
                 .ToArray();
-            SendData(JsonConvert.SerializeObject(new { a = action, v = arrayOfExchangeAndToken, m = _subscriptionModes[liveFeedType] }));
+            SendData(JsonConvert.SerializeObject(new { a = action, v = arrayOfExchangeAndToken, m = _subscriptionModes[liveFeedType] }), action);
         }
 
-        private void SendData(string data)
+        private void SendData(string data, string action)
         {
             if (string.IsNullOrEmpty(data))
             {
@@ -162,7 +201,7 @@ namespace AliceBlueOnlineLibrary
             _webSocket.Send(data);
             if (!_messageReceiveEvent.WaitOne(5000))
             {
-                Console.WriteLine("Cannot receive the response. Timeout.");
+                Console.WriteLine($"Cannot receive the response. Timeout for the action : {action}");
             }
         }
 
@@ -174,32 +213,32 @@ namespace AliceBlueOnlineLibrary
             {
                 case (byte)WsFrameMode.MarketData:
                     {
-                        MarketData marketData = MarketData.Deserialize(data.Skip(1).ToArray());
+                        _marketData = MarketData.Deserialize(data.Skip(1).ToArray());
                         break;
                     }
                 case (byte)WsFrameMode.CompactMarketData:
                     {
-                        CompactData compactData = CompactData.Deserialize(data.Skip(1).ToArray());
+                        _compactData = CompactData.Deserialize(data.Skip(1).ToArray());
                         break;
                     }
                 case (byte)WsFrameMode.SnapQuote:
                     {
-                        SnapQuote snapQuote = SnapQuote.Deserialize(data.Skip(1).ToArray());
+                        _snapQuote = SnapQuote.Deserialize(data.Skip(1).ToArray());
                         break;
                     }
                 case (byte)WsFrameMode.FullSnapQuote:
                     {
-                        FullSnapQuote fullSnapQuote = FullSnapQuote.Deserialize(data.Skip(1).ToArray());
+                        _fullSnapQuote = FullSnapQuote.Deserialize(data.Skip(1).ToArray());
                         break;
                     }
                 case (byte)WsFrameMode.DPR:
                     {
-                        Dpr dpr = Dpr.Deserialize(data.Skip(1).ToArray());
+                        _dpr = Dpr.Deserialize(data.Skip(1).ToArray());
                         break;
                     }
                 case (byte)WsFrameMode.OI:
                     {
-                        OpenInterest openInterest = OpenInterest.Deserialize(data.Skip(1).ToArray());
+                        _openInterest = OpenInterest.Deserialize(data.Skip(1).ToArray());
                         break;
                     }
                 case (byte)WsFrameMode.MarketStatus:

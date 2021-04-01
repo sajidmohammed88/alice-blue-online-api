@@ -80,7 +80,7 @@ def main():
                           run_in_background=True)
     while(socket_opened == False):    # wait till socket open & then subscribe
         pass
-    alice.subscribe(ins_scrip, LiveFeedType.COMPACT)
+    alice.subscribe(ins_scrip, LiveFeedType.SNAPQUOTE)
     current_signal = ''
     while True:
         if(datetime.datetime.now().second == 0):

@@ -38,30 +38,40 @@ namespace MainAliceBlue
 
             #region AliceBlueApi
             _aliceBlueApi = new AliceBlueApi(tokenResponse.AccessToken);
-            //await FillAliceBlueApiData().ConfigureAwait(false); 
+            // await FillAliceBlueApiData().ConfigureAwait(false);
             #endregion
 
             #region Feeds
             _aliceBlueFeeds = new AliceBlueFeeds(_aliceBlueApi, tokenResponse.AccessToken, new List<string> { "NSE", "BSE" });
+
             await _aliceBlueFeeds.InitializeFeeds().ConfigureAwait(false);
             IList<Instrument> nseInstruments = _aliceBlueFeeds.GetInstrumentsBySymbol("NSE", "TATASTEEL");
-            IList<Instrument> bseInstruments = _aliceBlueFeeds.GetInstrumentsBySymbol("BSE", "ALLCAP");
+            //IList<Instrument> bseInstruments = _aliceBlueFeeds.GetInstrumentsBySymbol("BSE", "ALLCAP");
 
             _aliceBlueFeeds.StartWebSocket();
-            //_aliceBlueFeeds.Subscribe(nseInstruments, LiveFeedType.MarketData);
-           //_aliceBlueFeeds.Subscribe(nseInstruments, LiveFeedType.Compact);
-            //_aliceBlueFeeds.Subscribe(nseInstruments, LiveFeedType.SnapQuote);
-            //_aliceBlueFeeds.Subscribe(nseInstruments, LiveFeedType.FullSnapQuote);
+            _aliceBlueFeeds.Subscribe(nseInstruments, LiveFeedType.MarketData);
+            _aliceBlueFeeds.Subscribe(nseInstruments, LiveFeedType.Compact);
+            _aliceBlueFeeds.Subscribe(nseInstruments, LiveFeedType.SnapQuote);
+            _aliceBlueFeeds.Subscribe(nseInstruments, LiveFeedType.FullSnapQuote);
 
-            //_aliceBlueFeeds.SubscribeExchangeMessages();
+            //_aliceBlueFeeds.Unsubscribe(nseInstruments, LiveFeedType.Compact);
+
+            _aliceBlueFeeds.SubscribeExchangeMessages();
             _aliceBlueFeeds.SubscribeMarketStatusMessages();
 
             Thread.Sleep(20000);
 
-            IList<MarketStatus> marketStatusMessages = _aliceBlueFeeds.GetMarketStatusMessages();
-            //IList<ExchangeMessage> exchangeMessages = _aliceBlueFeeds.GetExchangeMessages();
-            // _aliceBlueFeeds.Close();
 
+            MarketData marketData = _aliceBlueFeeds.GetMarketData();
+            CompactData compactData = _aliceBlueFeeds.GetCompactData();
+            SnapQuote snapQuote = _aliceBlueFeeds.GetSnapQuote();
+            FullSnapQuote fullSnapQuote = _aliceBlueFeeds.GetFullSnapQuote();
+            Dpr dpr = _aliceBlueFeeds.GetDpr();
+            OpenInterest openInterest = _aliceBlueFeeds.GetOpenInterest();
+            IList<MarketStatus> marketStatusMessages = _aliceBlueFeeds.GetMarketStatusMessages();
+            IList<ExchangeMessage> exchangeMessages = _aliceBlueFeeds.GetExchangeMessages();
+            
+            //_aliceBlueFeeds.Close();
             #endregion
         }
     }

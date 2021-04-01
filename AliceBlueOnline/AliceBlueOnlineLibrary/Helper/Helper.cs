@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AliceBlueOnlineLibrary.DataContract.Feeds.Enum;
 
 namespace AliceBlueOnlineLibrary.Helper
 {
@@ -64,6 +65,17 @@ namespace AliceBlueOnlineLibrary.Helper
                 .SplitList()
                 .Select(ui => decimal.Divide(ReverseBytes(BitConverter.ToUInt32(ui.ToArray(), 0)), multiplier))
                 .ToList();
+        }
+
+        public static Dictionary<LiveFeedType, string> GetSubscriptionModes()
+        {
+            return new Dictionary<LiveFeedType, string>
+            {
+                {LiveFeedType.Compact, "compact_marketdata"},
+                {LiveFeedType.MarketData, "marketdata"},
+                {LiveFeedType.SnapQuote, "snapquote"},
+                {LiveFeedType.FullSnapQuote, "full_snapquote"}
+            };
         }
     }
 }

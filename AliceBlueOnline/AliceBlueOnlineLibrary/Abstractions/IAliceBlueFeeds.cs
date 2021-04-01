@@ -14,7 +14,7 @@ namespace AliceBlueOnlineLibrary.Abstractions
         Task InitializeFeeds();
 
         /// <summary>
-        /// Gets the instrument by symbol.
+        /// Get the instrument by symbol.
         /// </summary>
         /// <param name="exchange">The exchange.</param>
         /// <param name="symbol">The symbol.</param>
@@ -44,18 +44,6 @@ namespace AliceBlueOnlineLibrary.Abstractions
         void SubscribeExchangeMessages();
 
         /// <summary>
-        /// Gets the market status messages.
-        /// </summary>
-        /// <returns>The market status messages.</returns>
-        IList<MarketStatus> GetMarketStatusMessages();
-
-        /// <summary>
-        /// Gets the exchange messages.
-        /// </summary>
-        /// <returns>The exchange messages.</returns>
-        IList<ExchangeMessage> GetExchangeMessages();
-
-        /// <summary>
         /// Unsubscribe to a live feed.
         /// </summary>
         /// <param name="instruments">The instruments.</param>
@@ -66,5 +54,54 @@ namespace AliceBlueOnlineLibrary.Abstractions
         /// Closes the websocket.
         /// </summary>
         void Close();
+
+        /// <summary>
+        /// Get the market status messages.
+        /// </summary>
+        /// <returns>The market status messages.</returns>
+        IList<MarketStatus> GetMarketStatusMessages();
+
+        /// <summary>
+        /// Get the exchange messages.
+        /// </summary>
+        /// <returns>The exchange messages.</returns>
+        IList<ExchangeMessage> GetExchangeMessages();
+
+        /// <summary>
+        /// Get the market data.
+        /// </summary>
+        /// <returns>The market data.</returns>
+        MarketData GetMarketData();
+
+        /// <summary>
+        /// Get the compact data.
+        /// </summary>
+        /// <returns>The compact data.</returns>
+        CompactData GetCompactData();
+
+
+        /// <summary>
+        /// Get the snap quote.
+        /// </summary>
+        /// <returns>The snap quote.</returns>
+        SnapQuote GetSnapQuote();
+
+        /// <summary>
+        /// Get the full snap quote.
+        /// </summary>
+        /// <returns>The full snap quote.</returns>
+        FullSnapQuote GetFullSnapQuote();
+
+        /// <summary>
+        /// Get the DPR.
+        /// </summary>
+        /// <returns>The DPR.</returns>
+        Dpr GetDpr();
+
+        /// <summary>
+        /// Get the open interest.
+        /// </summary>
+        /// <returns>The open interest.</returns>
+        OpenInterest GetOpenInterest();
     }
 }

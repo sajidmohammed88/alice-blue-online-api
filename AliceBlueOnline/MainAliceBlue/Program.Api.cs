@@ -143,7 +143,7 @@ namespace MainAliceBlue
             }
 
             //order history
-            var orderHistoryResponse = await _aliceBlueApi.GetOrderHistory("210320000001901").ConfigureAwait(false);
+            var orderHistoryResponse = await _aliceBlueApi.GetOrderHistory("210401000000170").ConfigureAwait(false);
             if (orderHistoryResponse == null)
             {
                 throw new ArgumentNullException(nameof(orderHistoryResponse));
