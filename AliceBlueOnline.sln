@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AliceBlueOnlineLibrary", "AliceBlueOnlineLibrary\AliceBlueOnlineLibrary.csproj", "{DFA4DD4D-DF0C-4BDD-89D5-DCE2A7B53F20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AliceBlueOnlineLibrary", "AliceBlueOnline\AliceBlueOnlineLibrary\AliceBlueOnlineLibrary.csproj", "{DFA4DD4D-DF0C-4BDD-89D5-DCE2A7B53F20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainAliceBlue", "MainAliceBlue\MainAliceBlue.csproj", "{A798990D-1E66-4D2D-BCA2-6E818F88E641}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainAliceBlue", "AliceBlueOnline\MainAliceBlue\MainAliceBlue.csproj", "{A798990D-1E66-4D2D-BCA2-6E818F88E641}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
