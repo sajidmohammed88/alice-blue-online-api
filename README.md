@@ -11,3 +11,4 @@ The Main project in AliceBlueOnline solution is a Cosole application that :
 1. Get token from cache if already exist
 2. Instancitae a new AliceBlueApi Object
 3. Call all routes to get, update, delete Orders, profiles ......
+4. Socket client to get Feeds data
